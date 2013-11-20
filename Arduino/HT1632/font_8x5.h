@@ -7,7 +7,7 @@
 #ifndef __FONT8X5_H
 #define __FONT8X5_H
 
-#define FONT_8X5_HEIGHT  7
+#define FONT_8X5_HEIGHT  8
 
 #define FONT_8X5_STEP_GLYPH 12
 // Number of bytes per glyph 
