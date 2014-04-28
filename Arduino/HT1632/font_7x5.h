@@ -7,12 +7,14 @@
 #ifndef __FONT7X5_H
 #define __FONT7X5_H
 
+#include <avr/pgmspace.h>
+
 #define FONT_7X5_HEIGHT  7
 
 #define FONT_7X5_STEP_GLYPH 12
 // Number of bytes per glyph 
 
-char FONT_7X5 [] = {
+prog_char FONT_7X5 [] PROGMEM = {
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b0000, 0b0000, 0b1111, 0b0101, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // !
   0b0111, 0b0000, 0b0000, 0b0000, 0b0111, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // "

@@ -7,12 +7,14 @@
 #ifndef __FONT5X4_H
 #define __FONT5X4_H
 
+#include <avr/pgmspace.h>
+
 #define FONT_5X4_HEIGHT  5
 
 #define FONT_5X4_STEP_GLYPH 10
 // Number of bytes per glyph 
 
-char FONT_5X4 [] = {
+prog_char FONT_5X4 [] PROGMEM = {
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b0111, 0b0001, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // !
   0b0011, 0b0000, 0b0000, 0b0000, 0b0011, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // "
