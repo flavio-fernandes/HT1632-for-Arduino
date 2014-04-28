@@ -7,12 +7,14 @@
 #ifndef __FONT8X4_H
 #define __FONT8X4_H
 
+#include <avr/pgmspace.h>
+
 #define FONT_8X4_HEIGHT  8
 
 #define FONT_8X4_STEP_GLYPH 10
 // Number of bytes per glyph 
 
-char FONT_8X4 [] = {
+prog_char FONT_8X4 [] PROGMEM = {
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b1111, 0b1101, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // !
   0b0011, 0b0000, 0b0000, 0b0000, 0b0011, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // "
