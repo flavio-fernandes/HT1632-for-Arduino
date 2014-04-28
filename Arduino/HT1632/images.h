@@ -38,4 +38,9 @@ prog_char IMG_SPEAKER_B [] PROGMEM = {0b1000, 0b0001, 0b1000, 0b0001, 0b1100, 0b
 #define IMG_SPEAKER_WIDTH 	 6
 #define IMG_SPEAKER_HEIGHT 	 8
 
+#define IMG_SPEAKER_A_WIDTH 	 6
+#define IMG_SPEAKER_A_HEIGHT 	 8
+#define IMG_SPEAKER_B_WIDTH 	 6
+#define IMG_SPEAKER_B_HEIGHT 	 8
+
 #endif // __IMAGES_H
