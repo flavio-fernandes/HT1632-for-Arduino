@@ -14,7 +14,7 @@
 #define FONT_7X5_STEP_GLYPH 12
 // Number of bytes per glyph 
 
-prog_char FONT_7X5 [] PROGMEM = {
+const char FONT_7X5 [] PROGMEM = {
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b0000, 0b0000, 0b1111, 0b0101, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // !
   0b0111, 0b0000, 0b0000, 0b0000, 0b0111, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // "
@@ -88,7 +88,7 @@ prog_char FONT_7X5 [] PROGMEM = {
   0b0000, 0b0100, 0b0000, 0b0100, 0b0000, 0b0100, 0b0000, 0b0100, 0b0000, 0b0100, 0b0000, 0b0000  // _
 };
 
-char FONT_7X5_WIDTH [] = {
+const char FONT_7X5_WIDTH [] = {
   1, 3, 3, 5, 5, 5, 5, 1,  // spc to '
   3, 3, 5, 5, 2, 5, 2, 5,  // ( to /
   5, 3, 5, 5, 5, 5, 5, 5,  // 0 to 7

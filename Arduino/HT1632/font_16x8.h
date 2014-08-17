@@ -14,7 +14,7 @@
 #define FONT_16X8_STEP_GLYPH 32
 // Number of bytes per glyph 
 
-prog_char FONT_16X8 [] PROGMEM = {
+const char FONT_16X8 [] PROGMEM = {
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
@@ -336,7 +336,7 @@ prog_char FONT_16X8 [] PROGMEM = {
   0b0000, 0b1100, // _
 };
 
-char FONT_16X8_WIDTH [] = {
+const char FONT_16X8_WIDTH [] = {
   8, 3, 5, 8, 8, 7, 8, 2,  // spc to '
   5, 5, 8, 6, 3, 6, 2, 8,  // ( to /
   8, 8, 8, 8, 8, 8, 8, 8,  // 0 to 7

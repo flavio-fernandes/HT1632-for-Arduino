@@ -14,7 +14,7 @@
 #define FONT_8X4_STEP_GLYPH 10
 // Number of bytes per glyph 
 
-prog_char FONT_8X4 [] PROGMEM = {
+const char FONT_8X4 [] PROGMEM = {
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b1111, 0b1101, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // !
   0b0011, 0b0000, 0b0000, 0b0000, 0b0011, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // "
@@ -88,7 +88,7 @@ prog_char FONT_8X4 [] PROGMEM = {
   0b0000, 0b0001, 0b0000, 0b0001, 0b0000, 0b0001, 0b0000, 0b0000, 0b0000, 0b0000  // _
 };
 
-char FONT_8X4_WIDTH [] = {
+const char FONT_8X4_WIDTH [] = {
   1, 3, 3, 4, 4, 4, 4, 1,  // spc to '
   3, 3, 4, 4, 2, 4, 2, 4,  // ( to /
   4, 3, 4, 4, 4, 4, 4, 4,  // 0 to 7

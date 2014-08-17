@@ -14,7 +14,7 @@
 #define FONT_5X4_STEP_GLYPH 10
 // Number of bytes per glyph 
 
-prog_char FONT_5X4 [] PROGMEM = {
+const char FONT_5X4 [] PROGMEM = {
   0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // SPACE
   0b0111, 0b0001, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // !
   0b0011, 0b0000, 0b0000, 0b0000, 0b0011, 0b0000, 0b0000, 0b0000, 0b0000, 0b0000,  // "
@@ -88,7 +88,7 @@ prog_char FONT_5X4 [] PROGMEM = {
   0b0000, 0b0001, 0b0000, 0b0001, 0b0000, 0b0001, 0b0000, 0b0000, 0b0000, 0b0000  // _
 };
 
-char FONT_5X4_WIDTH [] = {
+const char FONT_5X4_WIDTH [] = {
   1, 1, 3, 5, 4, 5, 4, 1,
   2, 2, 3, 5, 2, 3, 1, 4,
   3, 3, 4, 3, 4, 3, 4, 4,
