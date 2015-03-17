@@ -18,12 +18,15 @@
 
 // Uncomment line below in order to have this library supporting the bicolor
 // sure electronics DE-DP14112 (P4 32X16 RG Bicolor LED Dot Matrix Unit Board)
-// #define BICOLOR_MATRIX 1
+#define BICOLOR_MATRIX 1
 
+// Important: make sure you change the number of sure electronics DE-DP14112
+// to represent how many units are daisy chainned together
+#define NUM_OF_BICOLOR_UNITS 1
 
 #ifdef BICOLOR_MATRIX
 #define COM_SIZE 16   /* max_number_of_y */
-#define OUT_SIZE 32   /* max_number_of_x make it 64 when there are 2 boards daisy chained */
+#define OUT_SIZE (32 * NUM_OF_BICOLOR_UNITS)  /* max_number_of_x */
 #define NUM_ACTIVE_CHIPS (OUT_SIZE / 8)
 #define NUM_COLORS 2  /* aka boards: 1)green and 2)red */
 #define MAX_BOARDS (NUM_COLORS + 1)  /* includes SECONDARY */
