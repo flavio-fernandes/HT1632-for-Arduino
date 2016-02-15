@@ -1,10 +1,24 @@
 #include "HT1632.h"
 
+#ifdef RASPBERRY_PI
+
+#include <stdlib.h>
+#include <time.h>
+#include <math.h>       /* ceil */
+#include <stdio.h>
+#include <wiringPi.h>
+
+#pragma GCC diagnostic ignored "-Wchar-subscripts"
+
+#else // ifdef RASPBERRY_PI
+
 #if (ARDUINO >= 100)
   #include <Arduino.h>
 #else
   #include <WProgram.h>
 #endif
+
+#endif // ifdef RASPBERRY_PI
 
 /*
  * HIGH LEVEL FUNCTIONS
@@ -277,8 +291,7 @@ void HT1632Class::drawTarget(char targetBuffer) {
 #endif // BICOLOR_MATRIX
 }
 
-void HT1632Class::drawImage(const char * img, char width, char height, char x, char y, int offset){
-  char length = width*height/4;
+void HT1632Class::drawImage(const char * img, char width, char height, int x, int y, int offset){
   char mask;
   
   // Sanity checks
@@ -287,7 +300,7 @@ void HT1632Class::drawImage(const char * img, char width, char height, char x, c
   // After looking at the rest of this function, you may need one.
   
   // Copying Engine.
-  // You are not expected to understand this.
+  // You are only expected to understand this if it does not work right. ;)
   for(char i=0; i<width; ++i) {
     char carryover_y = 0; // Simply a copy of the last 4-bit word of img.
     char carryover_num = (y - (y & ~ 3)); // Number of digits carried over
@@ -309,8 +322,13 @@ void HT1632Class::drawImage(const char * img, char width, char height, char x, c
       //  mask = (height-loc_y >= 4)?0b00001111:(0b00001111 >> (4-(height-j))) & 0b00001111; // Mask bottom
         
       if(loc_y % 4 == 0) {
-          mask = (height-loc_y >= 4)?0b00001111:(0b00001111 >> (4-(height-j))) & 0b00001111;
+	  const int shiftBottom = 4-(height-j);
+	  mask = (height-loc_y >= 4 || shiftBottom <= 0) ? 0b00001111 : (0b00001111 >> shiftBottom) & 0b00001111; // Mask bottom
+#ifdef RASPBERRY_PI
+          mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] = (mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] & (~mask) & 0b00001111) | (img[(int)ceil((float)height/4.0f)*i + j/4 + offset] & mask) | MASK_NEEDS_REWRITING;
+#else // ifdef RASPBERRY_PI 
           mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] = (mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] & (~mask) & 0b00001111) | (pgm_read_byte(&img[(int)ceil((float)height/4.0f)*i + j/4 + offset]) & mask) | MASK_NEEDS_REWRITING;
+#endif // ifdef RASPBERRY_PI 
       } else {
         // If carryover_valid is NOT true, then this is the first set to be copied.
         //   If loc_y > 0, preserve the contents of the pixels above, copy to mem, and then copy remaining
@@ -319,9 +337,14 @@ void HT1632Class::drawImage(const char * img, char width, char height, char x, c
         // COPY START
         if(!carryover_valid) { 
           if(loc_y > 0) {
-            mask = (height-loc_y >= 4)?0b00001111:(0b00001111 >> (4-(height-j))) & 0b00001111; // Mask bottom
+	    const int shiftBottom = 4-(height-j);
+	    mask = (height-loc_y >= 4 || shiftBottom <= 0) ? 0b00001111 : (0b00001111 >> shiftBottom) & 0b00001111; // Mask bottom
             mask = (0b00001111 << carryover_num) & mask; // Mask top
+#ifdef RASPBERRY_PI 
+            mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] = (mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] & (~mask) & 0b00001111) | ((img[(int)ceil((float)height/4.0f)*i + j/4 + offset] << carryover_num) & mask) | MASK_NEEDS_REWRITING;
+#else  // ifdef RASPBERRY_PI 
             mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] = (mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] & (~mask) & 0b00001111) | ((pgm_read_byte(&img[(int)ceil((float)height/4.0f)*i + j/4 + offset]) << carryover_num) & mask) | MASK_NEEDS_REWRITING;
+#endif  // ifdef RASPBERRY_PI 
           }
           carryover_valid = true;
         } else {
@@ -335,11 +358,20 @@ void HT1632Class::drawImage(const char * img, char width, char height, char x, c
           } else {
             // There is data in the carry-over buffer. Copy that data and the values from the current cell into mem.
             // The inclusion of a carryover_num term is to account for the presence of the carryover data  when calculating the bottom clipping.
-            mask = (height-loc_y >= 4)?0b00001111:(0b00001111 >> (4-(height+carryover_num-j))) & 0b00001111; // Mask bottom
+	    const int shiftBottom = 4-(height+carryover_num-j);
+	    mask = (height-loc_y >= 4 || shiftBottom <= 0) ? 0b00001111 : (0b00001111 >> shiftBottom) & 0b00001111; // Mask bottom
+#ifdef RASPBERRY_PI 
+            mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] = (mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] & (~mask) & 0b00001111) | ((img[(int)ceil((float)height/4.0f)*i + j/4 + offset] << carryover_num) & mask) | (carryover_y >> (4 - carryover_num) & mask) | MASK_NEEDS_REWRITING;
+#else // ifdef RASPBERRY_PI 
             mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] = (mem[_tgtBuffer][GET_ADDR_FROM_X_Y(loc_x,loc_y)] & (~mask) & 0b00001111) | ((pgm_read_byte(&img[(int)ceil((float)height/4.0f)*i + j/4 + offset]) << carryover_num) & mask) | (carryover_y >> (4 - carryover_num) & mask) | MASK_NEEDS_REWRITING;
+#endif // ifdef RASPBERRY_PI 
           }
         }
+#ifdef RASPBERRY_PI
+        carryover_y = img[(int)ceil((float)height/4.0f)*i + j/4 + offset];
+#else // ifdef RASPBERRY_PI 
         carryover_y = pgm_read_byte(&img[(int)ceil((float)height/4.0f)*i + j/4 + offset]);
+#endif // ifdef RASPBERRY_PI 
       }
     }
   }
@@ -594,13 +626,16 @@ void HT1632Class::select() {
  */
 
 void HT1632Class::recursiveWriteUInt (int inp) {
+#ifndef RASPBERRY_PI
   if(inp <= 0) return;
   int rd = inp % 10;
   recursiveWriteUInt(inp/10);
   Serial.write(48+rd);
+#endif // ifndef RASPBERRY_PI
 }
 
 void HT1632Class::writeInt (int inp) {
+#ifndef RASPBERRY_PI
   if(inp == 0)
     Serial.write('0');
   else
@@ -609,6 +644,7 @@ void HT1632Class::writeInt (int inp) {
       recursiveWriteUInt(-inp);
     } else 
       recursiveWriteUInt(inp);
+#endif // ifndef RASPBERRY_PI
 }
 
 HT1632Class HT1632;
