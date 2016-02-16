@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>       /* ceil */
-#include <stdio.h>
 #include <wiringPi.h>
 
 #pragma GCC diagnostic ignored "-Wchar-subscripts"
